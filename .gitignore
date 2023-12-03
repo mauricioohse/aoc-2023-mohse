@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+.vscode/tasks.json
+day2/input.txt
+day2/test.txt
+day3/input.txt
+day3/test.txt
+day4/input.txt
+day4/test.txt
