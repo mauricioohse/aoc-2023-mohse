@@ -39,7 +39,7 @@ day4/input.txt
 day4/test.txt
 
 # textfiles
-.txt
+*.txt
 
 # vscode
 .vscode
