@@ -340,7 +340,7 @@ int main()
     {
         long long int part2_specific = LLONG_MAX;
         long long int seed_min = 1886895233ll; //seeds[2];
-        long long int max_seed = 1980497843ll + // seed_min + seeds[3];
+        long long int max_seed = 1980497843ll; // seed_min + seeds[3];
 
         printf("\n looking for specific seeds, on range < %lld, %lld>", seed_min, max_seed);
         
