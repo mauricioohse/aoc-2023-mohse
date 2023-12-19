@@ -8,6 +8,7 @@
 #include <climits>
 #include  <time.h>
 #include <cstdint>
+#include <unistd.h>
 
 const char *resetColor = "\033[0m";
 const char *redColor = "\033[1;31m";
@@ -16,6 +17,7 @@ const char *yellowColor = "\033[1;33m";
 using namespace std;
 
 #define INPUT_TXT "input.txt"
+#define cout if(false) cout
 struct Pos
 {
     size_t x;
@@ -324,17 +326,24 @@ void P2_HitClockwiseOnMap()
     }
 
     cout << "Hit count:" << hit_count << endl;
-
+    printf("Hit Count:%d\n", hit_count);
 }
+
+clock_t start_time, end_time;
+double cpu_time_used;
 
 int main()
 {
-
+    start_time = clock();
     InitGlobal();
 
     P1_RunThroughMap();
 
     P2_HitClockwiseOnMap(); // necessary to run P1
 
+    end_time = clock();
+    cpu_time_used = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+
+    printf("CPU time used: %f seconds\n", cpu_time_used);
     return 0;
 }
