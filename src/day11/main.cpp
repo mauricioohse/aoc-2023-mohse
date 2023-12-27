@@ -4,20 +4,19 @@
 #include <cstdint>
 #include <fstream>
 
-#define cout if(false) cout 
+// #define cout if(false) cout 
 #define INPUT_TEXT "input.txt"
 
 const char *resetColor = "\033[0m";
 const char *redColor = "\033[1;31m";
 const char *greenColor = "\033[1;32m";
-const char *yellowColor = "\033[1;33m";
 
 using namespace std;
 
 struct Pos
 {
-    int i;
-    int j;
+    long long int i;
+    long long int j;
 };
 
 char original_map[200][200] = {0};
@@ -84,25 +83,13 @@ void read_input()
     }
 }
 
-void Print2Darr(char* arr, int m_i, int m_j)
-{
-    for(int i = 0; i < m_i; i++)
-    {
-        for(int j = 0; j < m_j; j++)
-        {
-            cout << *((arr+i*m_j) + j) << " ";
-        }
-        cout << endl;
-    }
-}
-
 char exp_map[280][280] = {0}; // expanded map
 char exp_row_map[280][280] = {0}; // first step of expanding, row expanded
 int delta_i=0, delta_j=0;
 Pos stars[500]={0};
 
 
-long long int Calc2Ddist(int i, int j, int x, int y)
+long long int Calc2Ddist(long long int i, long long int j, long long int x, long long int y)
 {
     return (abs(i - x) + abs(j - y));
 }
@@ -198,61 +185,59 @@ void P1_expand_space()
         }
 
 #define cout cout
-    cout << "Sum of stars distances: " << sum << " with " << n_stars << " stars and " << n_sums << " combinations of stars";
+    cout << "Sum of stars distances: " << sum << " with " << n_stars << " stars and " << n_sums << " combinations of stars" << endl;
 }
 
 void P2_expand_space_really_hard()
-{   // now, the expansion is of one million times. now we wont actually map the whole space onto memmory, only get the points
-// then
-const int MILLION = 1000000;
-Pos new_stars[500];
-copy(begin(original_stars), end(original_stars), begin(new_stars));
+{ // now, the expansion is of one million times. now we wont actually map the whole space onto memory, only get the points
 
-// increase rows
-int row_delta = 0;
-for (int i = 0; i < max_i; i++)
-{
-    row_delta += MILLION;
-    if (void_rows[i])
-        for (int s; s < n_original_stars; s++)
-        {
-            if (original_stars[s].i > i)
-            {
-                new_stars[s].i += MILLION;
-            }
-        }
-}
+    const int MILLION = 999999; // 9; // 1000000;
+    Pos new_stars[500];
+    copy(begin(original_stars), end(original_stars), begin(new_stars));
 
-// increase cols
-for (int j = 0; j < max_j; j++)
-{
-    row_delta += MILLION;
-    if (void_rows[j])
-        for (int s; s < n_original_stars; s++)
-        {
-            if (original_stars[s].j > j)
-            {
-                new_stars[s].j += MILLION;
-            }
-        }
-}
-
-// calculate the stars distance for every star
-long long int sum = 0;
-int n_sums = 0;
-for (int s = 0; s < n_original_stars; s++)
-    for (int ss = s + 1; ss < n_original_stars; ss++)
+    // increase rows
+    int row_delta = 0;
+    for (int i = 0; i < max_i; i++)
     {
-        Pos first_star = new_stars[s];
-        Pos second_star = new_stars[ss];
-        sum += Calc2Ddist(first_star.i, first_star.j, second_star.i, second_star.j);
-        // cout << "star " << s + 1 << " and " << ss + 1 <<
-        // " distance: " << Calc2Ddist(first_star.i, first_star.j, second_star.i, second_star.j) << endl;
-        n_sums++;
+        if (void_rows[i])
+            for (int s = 0; s < n_original_stars; s++)
+            {
+                if (original_stars[s].i > i)
+                {
+                    new_stars[s].i += MILLION;
+                }
+            }
     }
 
+    // increase cols
+    for (int j = 0; j < max_j; j++)
+    {
+        if (void_cols[j])
+            for (int s = 0; s < n_original_stars; s++)
+            {
+                if (original_stars[s].j > j)
+                {
+                    new_stars[s].j += MILLION;
+                }
+            }
+    }
+
+    // calculate the stars distance for every star
+    long long int sum = 0;
+    int n_sums = 0;
+    for (int s = 0; s < n_original_stars; s++)
+        for (int ss = s + 1; ss < n_original_stars; ss++)
+        {
+            Pos first_star = new_stars[s];
+            Pos second_star = new_stars[ss];
+            sum += Calc2Ddist(first_star.i, first_star.j, second_star.i, second_star.j);
+            // cout << "star " << s + 1 << " and " << ss + 1 <<
+            // " distance: " << Calc2Ddist(first_star.i, first_star.j, second_star.i, second_star.j) << endl;
+            n_sums++;
+        }
+
 #define cout cout
-cout << "Sum of stars distances: " << sum << " with " << n_original_stars << " stars and " << n_sums << " combinations of stars";
+    cout << "Sum of stars distances: " << sum << " with " << n_original_stars << " stars and " << n_sums << " combinations of stars";
 }
 
 int main()
